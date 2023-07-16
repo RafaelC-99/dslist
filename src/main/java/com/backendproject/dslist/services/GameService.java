@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.backendproject.dslist.dto.GameDTO;
 import com.backendproject.dslist.dto.GameMinDTO;
 import com.backendproject.dslist.entities.Game;
 import com.backendproject.dslist.repositories.GameRepository;
@@ -14,9 +16,16 @@ public class GameService {
     @Autowired
     private GameRepository gameRepository;
 
+    @Transactional(readOnly = true)
+    public GameDTO findById(Long id){
+        Game result = gameRepository.findById(id).get();
+        return new GameDTO(result);
+    }
 
-    public List<Game> findAll(){
-       var result = gameRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<GameMinDTO> findAll(){
+       var entity = gameRepository.findAll();
+       List<GameMinDTO> result = entity.stream().map(x -> new GameMinDTO(x)).toList();
        return result;
     }
 }
