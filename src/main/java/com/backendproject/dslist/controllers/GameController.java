@@ -21,7 +21,7 @@ public class GameController {
     @GetMapping
     public List<GameMinDTO> findAll(){
         List<Game> result = gameService.findAll();
-        List<GameMinDTO> dto = result.stream().map(x -> new GameMinDTO()).toList();
+        List<GameMinDTO> dto = result.stream().map(x -> new GameMinDTO(x)).toList();
         return dto;
     }
 }
